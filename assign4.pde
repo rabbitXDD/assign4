@@ -410,6 +410,8 @@ void reset() {
   countBulletFrame = 30;
   countLaserFrame = 0;
   bulletNum = 0;
+  deadAlien = 0;
+  life = 3;
 
   /*-----------Call Make Alien Function--------*/
   alienMaker();
