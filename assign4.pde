@@ -77,6 +77,7 @@ void draw() {
     checkRubyDrop(point);
     checkRubyHit();
 
+
     /*---------Call functions---------------*/
 
     alienShoot(countLaserFrame);
@@ -84,12 +85,7 @@ void draw() {
     checkShipHit();  /*finish this function*/
     countBulletFrame+=1;
     countLaserFrame+=1;
-
-    if(life==0){
-      status=GAME_LOSE;
-    }
     break;
-
 
   case GAME_PAUSE:
     /*---------Print Text-------------*/
@@ -204,14 +200,19 @@ void drawAlien() {
       alien.move();    //Move Alien
       alien.display(); //Draw Alien
       /*---------Call Check Line Hit---------*/
-
+      checkLineHit(alien);
       /*--------------------------------------*/
     }
   }
 }
 
 /*--------Check Line Hit---------*/
-
+void checkLineHit(Alien alien){
+  if(alien.aY>=420){
+    status=GAME_LOSE;
+  }
+}
+    
 
 /*---------Ship Shoot-------------*/
 void shootBullet(int frame) {
@@ -232,6 +233,18 @@ void shootBullet(int frame) {
       } else {
         bulletNum = 0;
       }
+      bList[bulletNum]= new Bullet(ship.posX, ship.posY, -3, 1); 
+      if (bulletNum<bList.length-2) {
+        bulletNum+=1;
+      } else {
+        bulletNum = 0;
+      }
+      bList[bulletNum]= new Bullet(ship.posX, ship.posY, -3, -1); 
+      if (bulletNum<bList.length-2) {
+        bulletNum+=1;
+      } else {
+        bulletNum = 0;
+      }
     }
     countBulletFrame = 0;
   }
@@ -245,13 +258,32 @@ void checkAlienDead() {
       Alien alien = aList[j];
       if (bullet != null && alien != null && !bullet.gone && !alien.die // Check Array isn't empty and bullet / alien still exist
       /*------------Hit detect-------------*/        ) {
-        /*-------do something------*/
+        
+        if(aList[j].aX - aList[j].aSize <= bList[i].bX && bList[i].bX <= aList[j].aX + aList[j].aSize &&
+        aList[j].aY - aList[j].aSize <= bList[i].bY && bList[i].bY <= aList[j].aY + aList[j].aSize){
+          removeBullet(bList[i]);
+          removeAlien(aList[j]);
+          point +=10;
+          deadAlien++;
+        }
       }
     }
   }
 }
 
 /*---------Alien Drop Laser-----------------*/
+void alienShoot(int frame) {
+      int i = int(random(0,53));
+      if(frame%50==0){
+        lList[laserNum]= new Laser(aList[i].aX , aList[i].aY);
+          if (laserNum<lList.length-2) {
+            laserNum+=1;
+          } else {
+            laserNum = 0;
+          }
+       }
+
+}
 
 
 /*---------Check Laser Hit Ship-------------*/
@@ -261,12 +293,24 @@ void checkShipHit() {
     if (laser!= null && !laser.gone // Check Array isn't empty and laser still exist
     /*------------Hit detect-------------*/      ) {
       /*-------do something------*/
+      if(ship.posX - ship.shipSize <= lList[i].lX && lList[i].lX <= ship.posX + ship.shipSize &&
+      ship.posY - ship.shipSize <= lList[i].lY && lList[i].lY <= ship.posY + ship.shipSize){
+        removeLaser(laser);
+        life--;
+      }
     }
   }
 }
 
 /*---------Check Win Lose------------------*/
-
+void checkWin_Lose(){
+    if(life==0){
+      status=GAME_LOSE;
+    }
+    if(deadAlien==total){
+      status=GAME_WIN;
+    }
+}
 
 void winAnimate() {
   int x = int(random(128))+70;
@@ -299,10 +343,36 @@ void loseAnimate() {
 
 /*---------Check Ruby Hit Ship-------------*/
 
+void checkRubyDrop(int p){
+  if(p==200){
+    ruby.show = true;
+    ruby.pX = int(random(width));
+    ruby.pY = -10;
+    }
+  if (ruby.show) { // Check ruby still exist
+      ruby.move();      //Move ruby
+      ruby.display();   //Draw ruby
+      //println("powerup");
+      if (ruby.pY>480) {
+        removeRuby(ruby); //Remove ruby from the Screen
+      }
+  }
+}
+
+void checkRubyHit(){
+   if(ship.posX - ship.shipSize <= ruby.pX && ruby.pX <= ship.posX + ship.shipSize &&
+      ship.posY - ship.shipSize <= ruby.pY && ruby.pY <= ship.posY + ship.shipSize){
+        removeRuby(ruby);
+        checkLevelUp();
+    }
+}
+  
 
 /*---------Check Level Up------------------*/
 
-
+void checkLevelUp(){
+    ship.upGrade = true;
+}
 /*---------Print Text Function-------------*/
 
 
@@ -322,6 +392,12 @@ void removeAlien(Alien obj) {
   obj.die = true;
   obj.aX = 1000;
   obj.aY = 1000;
+}
+
+void removeRuby(PowerUp obj) {
+  obj.show = false;
+  obj.pX = 1000;
+  obj.pY = 1000;
 }
 
 /*---------Reset Game-------------*/
@@ -359,16 +435,34 @@ void reset() {
   ruby.pX = int(random(width));
   ruby.pY = -10;
 }
+
 /*-----------finish statusCtrl--------*/
 void statusCtrl() {
   if (key == ENTER) {
     switch(status) {
-
+/*-----------add things here--------*/
     case GAME_START:
       status = GAME_PLAYING;
       break;
-
-      /*-----------add things here--------*/
+    
+    case GAME_PLAYING:
+      status = GAME_PAUSE;
+      break;
+      
+    case GAME_PAUSE:
+      status = GAME_PLAYING;
+      break;
+      
+    case GAME_WIN:
+      reset();
+      status = GAME_PLAYING;
+      break;      
+ 
+    case GAME_LOSE:
+      reset();
+      status = GAME_PLAYING;
+      break;  
+           
 
     }
   }
