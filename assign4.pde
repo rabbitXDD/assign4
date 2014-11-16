@@ -418,12 +418,8 @@ void reset() {
 
   /*--------Init Variable Here---------*/
   bList = new Bullet[30];
-  lList = new Laser[53];
+  lList = new Laser[30];
   aList = new Alien[100];
-
-  size(640, 480);
-  background(0, 0, 0);
-  rectMode(CENTER);
 
   ship = new Ship(width/2, 460, 3);
   ruby = new PowerUp(int(random(width)), -10);
