@@ -13,8 +13,8 @@ final int GAME_LOSE    = 4;
 int status;              //Game Status
 int point;               //Game Score
 int expoInit;            //Explode Init Size
-int countBulletFrame;    //Bullet Time Counter
-int bulletNum;           //Bullet Order Number
+int countBulletFrame = 0;    //Bullet Time Counter
+int bulletNum = 0;           //Bullet Order Number
 
 /*--------Put Variables Here---------*/
 int ix = 50;
