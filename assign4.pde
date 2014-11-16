@@ -73,7 +73,8 @@ void draw() {
     drawAlien();
     drawBullet();
     drawLaser();
-
+    checkRubyDrop(point);
+    checkRubyHit();
     /*---------Call functions---------------*/
 
 
