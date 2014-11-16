@@ -24,7 +24,7 @@ int spacingY = 50;
 int circlesInRow = 12;
 int total = 53;
 int countLaserFrame=0;
-int laserNum;
+int laserNum = 0;
 int life =3;
 int deadAlien = 0;
 
