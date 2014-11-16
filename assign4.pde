@@ -79,7 +79,8 @@ void draw() {
 
     checkAlienDead();/*finish this function*/
     checkShipHit();  /*finish this function*/
-
+    alienShoot(countLaserFrame);
+    countLaserFrame+=1;
     countBulletFrame+=1;
     break;
 
