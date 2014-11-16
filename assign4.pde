@@ -330,8 +330,8 @@ void reset() {
     bList[i] = null;
     lList[i] = null;
   }
-
-  for (int i=0; i<aList.length-1; i++) {
+  
+   for (int i=0; i<aList.length-1; i++) {
     aList[i] = null;
   }
 
@@ -339,9 +339,15 @@ void reset() {
   expoInit = 0;
   countBulletFrame = 30;
   bulletNum = 0;
+  deadAlien = 0;
 
   /*--------Init Variable Here---------*/
-  
+  bList = new Bullet[30];
+  lList = new Laser[30];
+  aList = new Alien[100];
+
+  life = 3;
+  deadAlien = 0;
 
   /*-----------Call Make Alien Function--------*/
   alienMaker();
@@ -353,7 +359,6 @@ void reset() {
   ruby.pX = int(random(width));
   ruby.pY = -10;
 }
-
 /*-----------finish statusCtrl--------*/
 void statusCtrl() {
   if (key == ENTER) {
