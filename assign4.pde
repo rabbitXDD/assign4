@@ -298,7 +298,14 @@ void checkShipHit() {
 }
 
 /*---------Check Win Lose------------------*/
-
+void checkWin_Lose(){
+    if(life==0){
+      status=GAME_LOSE;
+    }
+    if(deadAlien==total){
+      status=GAME_WIN;
+    }
+}
 
 void winAnimate() {
   int x = int(random(128))+70;
@@ -330,10 +337,32 @@ void loseAnimate() {
 }
 
 /*---------Check Ruby Hit Ship-------------*/
-
-
+void checkRubyDrop(int p){
+  if(p==200){
+    ruby.show = true;
+    ruby.pX = int(random(width));
+    ruby.pY = -10;
+    }
+  if (ruby.show) { // Check ruby still exist
+      ruby.move();      //Move ruby
+      ruby.display();   //Draw ruby
+      //println("powerup");
+      if (ruby.pY>480) {
+        removeRuby(ruby); //Remove ruby from the Screen
+      }
+  }
+}
+void checkRubyHit(){
+   if(ship.posX - ship.shipSize <= ruby.pX && ruby.pX <= ship.posX + ship.shipSize &&
+      ship.posY - ship.shipSize <= ruby.pY && ruby.pY <= ship.posY + ship.shipSize){
+        removeRuby(ruby);
+        checkLevelUp();
+    }
+}
 /*---------Check Level Up------------------*/
-
+void checkLevelUp(){
+    ship.upGrade = true;
+}
 
 /*---------Print Text Function-------------*/
 
