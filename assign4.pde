@@ -412,9 +412,6 @@ void reset() {
   bulletNum = 0;
   deadAlien = 0;
   life = 3;
-  
-  bList = new Bullet[30];
-  lList = new Laser[30];
 
 
   /*-----------Call Make Alien Function--------*/
