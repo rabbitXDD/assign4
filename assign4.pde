@@ -17,7 +17,16 @@ int countBulletFrame;    //Bullet Time Counter
 int bulletNum;           //Bullet Order Number
 
 /*--------Put Variables Here---------*/
-
+int ix = 50;
+int iy = 50;
+int spacingX = 40;
+int spacingY = 50;
+int circlesInRow = 12;
+int total = 53;
+int countLaserFrame=0;
+int laserNum = 0;
+int life =3;
+int deadAlien = 0;
 
 void setup() {
 
@@ -44,8 +53,14 @@ void draw() {
   switch(status) {
 
   case GAME_START:
+    reset();
     /*---------Print Text-------------*/
-    text("press enter", 320, 240); // replace this with printText
+    textAlign(CENTER);
+    textSize(60);
+    fill(95, 194, 226);
+    text("GALIXIAN", width/2, 240);
+    textSize(20);
+    text("Press ENTER to Start", width/2, 280); // replace this with printText
     /*--------------------------------*/
     break;
 
@@ -59,25 +74,43 @@ void draw() {
     drawAlien();
     drawBullet();
     drawLaser();
+    checkRubyDrop(point);
+    checkRubyHit();
 
     /*---------Call functions---------------*/
 
-
+    alienShoot(countLaserFrame);
     checkAlienDead();/*finish this function*/
     checkShipHit();  /*finish this function*/
-
     countBulletFrame+=1;
+    countLaserFrame+=1;
+
+    if(life==0){
+      status=GAME_LOSE;
+    }
     break;
+
 
   case GAME_PAUSE:
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    textSize(40);
+    fill(95, 194, 226);
+    text("PAUSE", width/2, 240);
+    textSize(20);
+    text("Press ENTER to Resume", width/2, 280);
     /*--------------------------------*/
     break;
 
   case GAME_WIN:
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    fill(95, 194, 226);
+    textSize(40);
+    text("WINNER", width/2, 310);
+    textSize(20);
+    text("SCORE:", width/2-10, 350);
+    text(point, width/2+45, 350);
     /*--------------------------------*/
     winAnimate();
     break;
@@ -85,7 +118,12 @@ void draw() {
   case GAME_LOSE:
     loseAnimate();
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    fill(95, 194, 226);
+    textSize(40);
+    text("BOOOOM", width/2, 240);
+    textSize(20);
+    text("You are dead!!", width/2, 280);
     /*--------------------------------*/
     break;
   }
@@ -115,13 +153,22 @@ void keyPressed() {
 
 /*---------Make Alien Function-------------*/
 void alienMaker() {
-  aList[0]= new Alien(50, 50);
+  for(int i = 0; i < total ;i++){ 
+      int row = int(i/circlesInRow);
+      int col = int(i%circlesInRow);
+      int x = ix + col*spacingX;
+      int y = iy + row*spacingY;
+    aList[i]= new Alien(x, y);
+  }
 }
 
 void drawLife() {
   fill(230, 74, 96);
   text("LIFE:", 36, 455);
   /*---------Draw Ship Life---------*/
+  for(int i = 0; i<life ; i++){
+    ellipse(78+i*30,459,15,15);  
+  }
 }
 
 void drawBullet() {
