@@ -386,6 +386,12 @@ void removeAlien(Alien obj) {
   obj.aY = 1000;
 }
 
+void removeRuby(PowerUp obj) {
+  obj.show = false;
+  obj.pX = 1000;
+  obj.pY = 1000;
+}
+
 /*---------Reset Game-------------*/
 void reset() {
   for (int i=0; i<bList.length-1; i++) {
