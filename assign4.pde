@@ -404,9 +404,6 @@ void reset() {
   for (int i=0; i<bList.length-1; i++) {
     bList[i] = null;
     lList[i] = null;
-  }
-
-  for (int i=0; i<aList.length-1; i++) {
     aList[i] = null;
   }
 
