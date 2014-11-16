@@ -33,7 +33,7 @@ void setup() {
   status = GAME_START;
 
   bList = new Bullet[30];
-  lList = new Laser[30];
+  lList = new Laser[53];
   aList = new Alien[100];
 
   size(640, 480);
@@ -414,7 +414,7 @@ void reset() {
 
   /*--------Init Variable Here---------*/
   bList = new Bullet[30];
-  lList = new Laser[30];
+  lList = new Laser[53];
   aList = new Alien[100];
 
   size(640, 480);
