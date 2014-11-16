@@ -94,7 +94,13 @@ void draw() {
 
   case GAME_WIN:
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    fill(95, 194, 226);
+    textSize(40);
+    text("WINNER", width/2, 310);
+    textSize(20);
+    text("SCORE:", width/2-10, 350);
+    text(point, width/2+45, 350);
     /*--------------------------------*/
     winAnimate();
     break;
@@ -102,7 +108,12 @@ void draw() {
   case GAME_LOSE:
     loseAnimate();
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    fill(95, 194, 226);
+    textSize(40);
+    text("BOOOOM", width/2, 240);
+    textSize(20);
+    text("You are dead!!", width/2, 280);
     /*--------------------------------*/
     break;
   }
@@ -183,14 +194,18 @@ void drawAlien() {
       alien.move();    //Move Alien
       alien.display(); //Draw Alien
       /*---------Call Check Line Hit---------*/
-
+      checkLineHit(alien);
       /*--------------------------------------*/
     }
   }
 }
 
 /*--------Check Line Hit---------*/
-
+void checkLineHit(Alien alien){
+  if(alien.aY>=420){
+    status=GAME_LOSE;
+  }
+}
 
 /*---------Ship Shoot-------------*/
 void shootBullet(int frame) {
@@ -206,6 +221,18 @@ void shootBullet(int frame) {
     /*---------Ship Upgrade Shoot-------------*/
     else {
       bList[bulletNum]= new Bullet(ship.posX, ship.posY, -3, 0); 
+      if (bulletNum<bList.length-2) {
+        bulletNum+=1;
+      } else {
+        bulletNum = 0;
+      }
+      bList[bulletNum]= new Bullet(ship.posX, ship.posY, -3, 1); 
+      if (bulletNum<bList.length-2) {
+        bulletNum+=1;
+      } else {
+        bulletNum = 0;
+      }
+      bList[bulletNum]= new Bullet(ship.posX, ship.posY, -3, -1); 
       if (bulletNum<bList.length-2) {
         bulletNum+=1;
       } else {
