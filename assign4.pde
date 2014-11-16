@@ -53,6 +53,7 @@ void draw() {
   switch(status) {
 
   case GAME_START:
+    reset();
     /*---------Print Text-------------*/
     textAlign(CENTER);
     textSize(60);
