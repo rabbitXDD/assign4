@@ -415,7 +415,7 @@ void reset() {
   
   bList = new Bullet[30];
   lList = new Laser[30];
-  aList = new Alien[100];
+
 
   /*-----------Call Make Alien Function--------*/
   alienMaker();
