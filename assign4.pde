@@ -23,6 +23,8 @@ int spacingX = 40;
 int spacingY = 50;
 int circlesInRow = 12;
 int total = 53;
+int life =3;
+int deadAlien = 0;
 
 void setup() {
 
@@ -143,6 +145,9 @@ void drawLife() {
   fill(230, 74, 96);
   text("LIFE:", 36, 455);
   /*---------Draw Ship Life---------*/
+  for(int i = 0; i<life ; i++){
+    ellipse(78+i*30,459,15,15);  
+  }
 }
 
 void drawBullet() {
