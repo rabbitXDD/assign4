@@ -44,11 +44,16 @@ void draw() {
   switch(status) {
 
   case GAME_START:
+    reset();
     /*---------Print Text-------------*/
-    text("press enter", 320, 240); // replace this with printText
+    textAlign(CENTER);
+    textSize(60);
+    fill(95, 194, 226);
+    text("GALIXIAN", width/2, 240);
+    textSize(20);
+    text("Press ENTER to Start", width/2, 280); // replace this with printText
     /*--------------------------------*/
     break;
-
   case GAME_PLAYING:
     background(50, 50, 50);
 
@@ -71,7 +76,12 @@ void draw() {
 
   case GAME_PAUSE:
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    textSize(40);
+    fill(95, 194, 226);
+    text("PAUSE", width/2, 240);
+    textSize(20);
+    text("Press ENTER to Resume", width/2, 280);
     /*--------------------------------*/
     break;
 
@@ -115,7 +125,13 @@ void keyPressed() {
 
 /*---------Make Alien Function-------------*/
 void alienMaker() {
-  aList[0]= new Alien(50, 50);
+  for(int i = 0; i < total ;i++){ 
+      int row = int(i/circlesInRow);
+      int col = int(i%circlesInRow);
+      int x = ix + col*spacingX;
+      int y = iy + row*spacingY;
+      aList[i]= new Alien(x, y);
+  }
 }
 
 void drawLife() {
