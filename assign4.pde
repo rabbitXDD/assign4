@@ -25,6 +25,8 @@ int circlesInRow = 12;
 int total = 53;
 int life =3;
 int deadAlien = 0;
+int countLaserFrame=0;
+int laserNum = 0;
 
 void setup() {
 
@@ -265,7 +267,18 @@ void checkAlienDead() {
 }
 
 /*---------Alien Drop Laser-----------------*/
+void alienShoot(int frame) {
+      int i = int(random(0,53));
+      if(frame%50==0){
+        lList[laserNum]= new Laser(aList[i].aX , aList[i].aY);
+          if (laserNum<lList.length-2) {
+            laserNum+=1;
+          } else {
+            laserNum = 0;
+          }
+       }
 
+}
 
 /*---------Check Laser Hit Ship-------------*/
 void checkShipHit() {
@@ -274,6 +287,11 @@ void checkShipHit() {
     if (laser!= null && !laser.gone // Check Array isn't empty and laser still exist
     /*------------Hit detect-------------*/      ) {
       /*-------do something------*/
+      if(ship.posX - ship.shipSize <= lList[i].lX && lList[i].lX <= ship.posX + ship.shipSize &&
+      ship.posY - ship.shipSize <= lList[i].lY && lList[i].lY <= ship.posY + ship.shipSize){
+        removeLaser(laser);
+        life--;
+      }
     }
   }
 }
@@ -348,13 +366,12 @@ void reset() {
     aList[i] = null;
   }
 
+  /*--------Init Variable Here---------*/
   point = 0;
   expoInit = 0;
   countBulletFrame = 30;
+  countLaserFrame = 0;
   bulletNum = 0;
-
-  /*--------Init Variable Here---------*/
-  
 
   /*-----------Call Make Alien Function--------*/
   alienMaker();
@@ -377,7 +394,23 @@ void statusCtrl() {
       break;
 
       /*-----------add things here--------*/
-
+    case GAME_PLAYING:
+      status = GAME_PAUSE;
+      break;
+      
+    case GAME_PAUSE:
+      status = GAME_PLAYING;
+      break;
+      
+    case GAME_WIN:
+      reset();
+      status = GAME_PLAYING;
+      break;      
+ 
+    case GAME_LOSE:
+      reset();
+      status = GAME_PLAYING;
+      break;
     }
   }
 }
