@@ -17,7 +17,12 @@ int countBulletFrame;    //Bullet Time Counter
 int bulletNum;           //Bullet Order Number
 
 /*--------Put Variables Here---------*/
-
+int ix = 50;
+int iy = 50;
+int spacingX = 40;
+int spacingY = 50;
+int circlesInRow = 12;
+int total = 53;
 
 void setup() {
 
