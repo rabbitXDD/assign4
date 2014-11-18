@@ -10,6 +10,7 @@ final int GAME_PLAYING = 1;
 final int GAME_PAUSE   = 2;
 final int GAME_WIN     = 3;
 final int GAME_LOSE    = 4;
+
 int status;              //Game Status
 int point;               //Game Score
 int expoInit;            //Explode Init Size
@@ -23,10 +24,14 @@ int spacingX = 40;
 int spacingY = 50;
 int circlesInRow = 12;
 int total = 53;
-int life =3;
-int deadAlien = 0;
 int countLaserFrame=0;
 int laserNum = 0;
+int life =3;
+int deadAlien = 0;
+final int start = 5;
+final int pause = 6;
+final int win = 7;
+final int lose = 8;
 
 void setup() {
 
@@ -54,15 +59,9 @@ void draw() {
 
   case GAME_START:
     reset();
-    /*---------Print Text-------------*/
-    textAlign(CENTER);
-    textSize(60);
-    fill(95, 194, 226);
-    text("GALIXIAN", width/2, 240);
-    textSize(20);
-    text("Press ENTER to Start", width/2, 280); // replace this with printText
-    /*--------------------------------*/
+    printText(start);
     break;
+
   case GAME_PLAYING:
     background(50, 50, 50);
 
@@ -75,51 +74,32 @@ void draw() {
     drawLaser();
     checkRubyDrop(point);
     checkRubyHit();
+
+
     /*---------Call functions---------------*/
 
-
+    alienShoot(countLaserFrame);
     checkAlienDead();/*finish this function*/
     checkShipHit();  /*finish this function*/
-    alienShoot(countLaserFrame);
     checkWin_Lose();
-    countLaserFrame+=1;
     countBulletFrame+=1;
+    countLaserFrame+=1;
     break;
 
   case GAME_PAUSE:
-    /*---------Print Text-------------*/
-    textAlign(CENTER);
-    textSize(40);
-    fill(95, 194, 226);
-    text("PAUSE", width/2, 240);
-    textSize(20);
-    text("Press ENTER to Resume", width/2, 280);
-    /*--------------------------------*/
+    printText(pause);
     break;
 
   case GAME_WIN:
     /*---------Print Text-------------*/
-    textAlign(CENTER);
-    fill(95, 194, 226);
-    textSize(40);
-    text("WINNER", width/2, 310);
-    textSize(20);
-    text("SCORE:", width/2-10, 350);
-    text(point, width/2+45, 350);
+    printText(win);
     /*--------------------------------*/
     winAnimate();
     break;
 
   case GAME_LOSE:
     loseAnimate();
-    /*---------Print Text-------------*/
-    textAlign(CENTER);
-    fill(95, 194, 226);
-    textSize(40);
-    text("BOOOOM", width/2, 240);
-    textSize(20);
-    text("You are dead!!", width/2, 280);
-    /*--------------------------------*/
+    printText(lose);
     break;
   }
 }
@@ -211,6 +191,7 @@ void checkLineHit(Alien alien){
     status=GAME_LOSE;
   }
 }
+    
 
 /*---------Ship Shoot-------------*/
 void shootBullet(int frame) {
@@ -283,6 +264,7 @@ void alienShoot(int frame) {
 
 }
 
+
 /*---------Check Laser Hit Ship-------------*/
 void checkShipHit() {
   for (int i=0; i<lList.length-1; i++) {
@@ -339,6 +321,7 @@ void loseAnimate() {
 }
 
 /*---------Check Ruby Hit Ship-------------*/
+
 void checkRubyDrop(int p){
   if(p==200){
     ruby.show = true;
@@ -354,6 +337,7 @@ void checkRubyDrop(int p){
       }
   }
 }
+
 void checkRubyHit(){
    if(ship.posX - ship.shipSize <= ruby.pX && ruby.pX <= ship.posX + ship.shipSize &&
       ship.posY - ship.shipSize <= ruby.pY && ruby.pY <= ship.posY + ship.shipSize){
@@ -361,13 +345,60 @@ void checkRubyHit(){
         checkLevelUp();
     }
 }
+  
+
 /*---------Check Level Up------------------*/
+
 void checkLevelUp(){
     ship.upGrade = true;
 }
-
 /*---------Print Text Function-------------*/
+void printText(int status){
+    /*---------Print Text-------------*/
+    textAlign(CENTER);
 
+    switch (status){
+      case start:
+        textSize(60);
+        fill(95, 194, 226);
+        text("GALIXIAN", width/2, 240);
+        textSize(20);
+        text("Press ENTER to Start", width/2, 280); // replace this with printText
+        break;
+    
+      case pause:
+        /*---------Print Text-------------*/
+        textSize(40);
+        fill(95, 194, 226);
+        text("PAUSE", width/2, 240);
+        textSize(20);
+        text("Press ENTER to Resume", width/2, 280);
+        /*--------------------------------*/
+        break;
+    
+      case win:
+        /*---------Print Text-------------*/
+        fill(95, 194, 226);
+        textSize(40);
+        text("WINNER", width/2, 310);
+        textSize(20);
+        text("SCORE:", width/2-10, 350);
+        text(point, width/2+45, 350);
+        /*--------------------------------*/
+        break;
+    
+      case lose:
+        /*---------Print Text-------------*/
+        textAlign(CENTER);
+        fill(95, 194, 226);
+        textSize(40);
+        text("BOOOOM", width/2, 240);
+        textSize(20);
+        text("You are dead!!", width/2, 280);
+        /*--------------------------------*/
+        break;
+      }
+    }
 
 void removeBullet(Bullet obj) {
   obj.gone = true;
@@ -399,20 +430,20 @@ void reset() {
     bList[i] = null;
     lList[i] = null;
   }
-
-  for (int i=0; i<aList.length-1; i++) {
+  
+   for (int i=0; i<aList.length-1; i++) {
     aList[i] = null;
   }
 
-  /*--------Init Variable Here---------*/
   point = 0;
   expoInit = 0;
   countBulletFrame = 30;
-  countLaserFrame = 0;
   bulletNum = 0;
-  deadAlien = 0;
-  life = 3;
 
+
+  /*--------Init Variable Here---------*/
+  life = 3;
+  deadAlien = 0;
 
   /*-----------Call Make Alien Function--------*/
   alienMaker();
@@ -429,12 +460,11 @@ void reset() {
 void statusCtrl() {
   if (key == ENTER) {
     switch(status) {
-
+/*-----------add things here--------*/
     case GAME_START:
       status = GAME_PLAYING;
       break;
-
-      /*-----------add things here--------*/
+    
     case GAME_PLAYING:
       status = GAME_PAUSE;
       break;
@@ -451,7 +481,7 @@ void statusCtrl() {
     case GAME_LOSE:
       reset();
       status = GAME_PLAYING;
-      break;
+      break;  
     }
   }
 }
