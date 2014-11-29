@@ -127,10 +127,10 @@ void keyPressed() {
 }
 
 /*---------Make Alien Function-------------*/
-void alienMaker() {
-  for(int i = 0; i < total ;i++){ 
-      int row = int(i/circlesInRow);
-      int col = int(i%circlesInRow);
+void alienMaker(int totalNum,int rowNum) {
+  for(int i = 0; i < totalNum ;i++){ 
+      int row = int(i/rowNum);
+      int col = int(i%rowNum);
       int x = ix + col*spacingX;
       int y = iy + row*spacingY;
       aList[i]= new Alien(x, y);
@@ -142,7 +142,7 @@ void drawLife() {
   text("LIFE:", 36, 455);
   /*---------Draw Ship Life---------*/
   for(int i = 0; i<life ; i++){
-    ellipse(78+i*30,459,15,15);  
+    ellipse(78+i*25,459,15,15);  
   }
 }
 
@@ -242,6 +242,9 @@ void checkAlienDead() {
         aList[j].aY - aList[j].aSize <= bList[i].bY && bList[i].bY <= aList[j].aY + aList[j].aSize){
           removeBullet(bList[i]);
           removeAlien(aList[j]);
+          for(int deadIndex=j ; deadIndex<=total ; deadIndex++){
+            aList[deadIndex] = aList[deadIndex+1];
+          }
           point +=10;
           deadAlien++;
         }
@@ -252,7 +255,7 @@ void checkAlienDead() {
 
 /*---------Alien Drop Laser-----------------*/
 void alienShoot(int frame) {
-      int i = int(random(0,53));
+      int i = int(random(0,total-deadAlien));
       if(frame%50==0){
         lList[laserNum]= new Laser(aList[i].aX , aList[i].aY);
           if (laserNum<lList.length-2) {
@@ -446,7 +449,7 @@ void reset() {
   deadAlien = 0;
 
   /*-----------Call Make Alien Function--------*/
-  alienMaker();
+  alienMaker(total,circlesInRow);
 
   ship.posX = width/2;
   ship.posY = 460;
